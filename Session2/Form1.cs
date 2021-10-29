@@ -35,8 +35,15 @@ namespace Session2
         private void button1_Click(object sender, EventArgs e)
         {
             op.login(textBox1.Text, maskedTextBox1.Text);
-
+            if (op.isLogin)
+            {
+                this.Hide();
+                Form2 form = new Form2();
+                form.ShowDialog();
+                this.Close();
             }
+            
+        }
 
         }
     }

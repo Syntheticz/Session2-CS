@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Session2
     {
         Connect con = new Connect();
         MySqlDataAdapter adapter = new MySqlDataAdapter();
+        Op op = new Op();
         public List<Ems> ems { get; set; }
 
         public string assetSn { get; set; }
@@ -19,24 +21,16 @@ namespace Session2
         public string endDate { get; set; }
         public int emNumber { get; set; }
 
-        public List<Ems> getData()
+        public List<Ems> getData(DataTable dt)
         {
 
-            string query = "SELECT * FROM assets left join emergencymaintenances" +
-           " on assets.ID = emergencymaintenances.AssetID left join employees on assets.EmployeeID = employees.ID left join assetgroups " +
-           "on assets.AssetGroupID = assetgroups.ID left join departmentlocations on assets.DepartmentLocationID = departmentlocations.ID left join departments " +
-           "on departmentlocations.DepartmentID = departments.id left join locations on departmentlocations.LocationID = locations.ID left join changedparts on " +
-           "emergencymaintenances.ID = changedparts.ID left join priorities on emergencymaintenances.PriorityID = priorities.ID left join parts" +
-           " on changedparts.PartID = parts.ID";
+            op.getAllData(dt);
 
-            con.Open();
-            MySqlCommand command = new MySqlCommand(query, con.dbConnect());
-            adapter.SelectCommand = command;
-            DataTable dt = new DataTable();
-            adapter.Fill(dt);
             var list = new List<Ems>();
-            string buffer = "";
+            string buffer = "", edate = "--";
             int em = 0, i = 0;
+
+            
             foreach (DataRow dr in dt.Rows)
             {
 
@@ -51,14 +45,23 @@ namespace Session2
                     em++;
                 }
 
+                if (!dr["EMEndDate"].ToString().Equals(""))
+                {
+                    
+                    DateTime date = Convert.ToDateTime(dr["EMEndDate"].ToString()); 
+                    edate = date.ToString("dd/MM/yyyy");
 
-
+                }
+                else {
+                    edate = "--";
+                
+                }
 
                 list.Add(new Ems()
                 {
                     assetSn = dr["AssetSn"].ToString(),
                     assetName = dr["AssetName"].ToString(),
-                    endDate = dr["EMEndDate"].ToString(),
+                    endDate = edate,
                     emNumber = em
                 });
                 buffer = dr["AssetName"].ToString();
@@ -66,12 +69,7 @@ namespace Session2
                 em = 0;
                 i++;
             }
-
-
-
-
             return list;
-
         }
 
 

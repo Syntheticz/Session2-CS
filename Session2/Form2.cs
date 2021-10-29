@@ -21,16 +21,51 @@ namespace Session2
 
         public Form2()
         {
+            DataTable dt = new DataTable();
             InitializeComponent();
             Ems ems = new Ems();
-            ems.ems = ems.getData();
-            foreach (DataGridViewColumn dc in dataGridView1.Columns)
-            {
-                dc.SortMode = DataGridViewColumnSortMode.NotSortable;
-            }
+            ems.ems = ems.getData(dt);
+
             var emsa = ems.ems;
+
+            
+            this.Load += UserControl_Load; // or form or any control that is parent of the datagridview
+            dataGridView1.VisibleChanged += DataGridView1_VisibleChanged;
+
             dataGridView1.DataSource = emsa;
 
+           
+        }
+
+        private bool _firstLoaded;
+        private void UserControl_Load(object sender, EventArgs e)
+        {
+            _firstLoaded = true;
+        }
+
+        private void DataGridView1_VisibleChanged(object sender, EventArgs e)
+        {
+            if (_firstLoaded && dataGridView1.Visible)
+            {
+                _firstLoaded = false;
+                foreach (DataGridViewColumn dc in dataGridView1.Columns)
+                {
+                    dc.SortMode = DataGridViewColumnSortMode.NotSortable;
+
+                }
+
+                foreach (DataGridViewRow dr in this.dataGridView1.Rows)
+                {
+
+                    if (dr.Cells[2].Value.ToString().Equals("--"))
+                    {
+
+                        dr.DefaultCellStyle.BackColor = Color.Red;
+
+                    }
+
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
