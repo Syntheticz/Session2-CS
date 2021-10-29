@@ -32,10 +32,10 @@ namespace Session2
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.AssetSN = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AssetSn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AssetName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.last_closed = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.number_em = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EmEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.emNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -49,11 +49,11 @@ namespace Session2
             this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SunkenVertical;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.AssetSN,
+            this.AssetSn,
             this.AssetName,
-            this.last_closed,
-            this.number_em});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 40);
+            this.EmEndDate,
+            this.emNumber});
+            this.dataGridView1.Location = new System.Drawing.Point(12, 36);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
@@ -62,7 +62,7 @@ namespace Session2
             this.dataGridView1.ShowCellErrors = false;
             this.dataGridView1.ShowCellToolTips = false;
             this.dataGridView1.ShowEditingIcon = false;
-            this.dataGridView1.Size = new System.Drawing.Size(685, 221);
+            this.dataGridView1.Size = new System.Drawing.Size(653, 221);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -87,15 +87,13 @@ namespace Session2
             this.button1.Text = "Send Emergency Maintinance Request";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // AssetSN
+            // AssetSn
             // 
-            this.AssetSN.DataPropertyName = "AssetSN";
-            this.AssetSN.Frozen = true;
-            this.AssetSN.HeaderText = "AssetSN";
-            this.AssetSN.Name = "AssetSN";
-            this.AssetSN.ReadOnly = true;
-            this.AssetSN.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AssetSN.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.AssetSn.DataPropertyName = "AssetSn";
+            this.AssetSn.Frozen = true;
+            this.AssetSn.HeaderText = "Asset SN";
+            this.AssetSn.Name = "AssetSn";
+            this.AssetSn.ReadOnly = true;
             // 
             // AssetName
             // 
@@ -104,42 +102,37 @@ namespace Session2
             this.AssetName.HeaderText = "Asset Name";
             this.AssetName.Name = "AssetName";
             this.AssetName.ReadOnly = true;
-            this.AssetName.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.AssetName.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.AssetName.Width = 300;
+            this.AssetName.Width = 250;
             // 
-            // last_closed
+            // EmEndDate
             // 
-            this.last_closed.DataPropertyName = "EMEndDate";
-            this.last_closed.Frozen = true;
-            this.last_closed.HeaderText = "Last Closed EM";
-            this.last_closed.Name = "last_closed";
-            this.last_closed.ReadOnly = true;
-            this.last_closed.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.last_closed.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.last_closed.Width = 150;
+            this.EmEndDate.DataPropertyName = "endDate";
+            this.EmEndDate.Frozen = true;
+            this.EmEndDate.HeaderText = "Last Closed";
+            this.EmEndDate.Name = "EmEndDate";
+            this.EmEndDate.ReadOnly = true;
+            this.EmEndDate.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.EmEndDate.Width = 200;
             // 
-            // number_em
+            // emNumber
             // 
-            this.number_em.DataPropertyName = "number_em";
-            this.number_em.Frozen = true;
-            this.number_em.HeaderText = "Number EM";
-            this.number_em.Name = "number_em";
-            this.number_em.ReadOnly = true;
-            this.number_em.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.number_em.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.number_em.Width = 150;
+            this.emNumber.DataPropertyName = "emNumber";
+            this.emNumber.Frozen = true;
+            this.emNumber.HeaderText = "Number of EMs";
+            this.emNumber.Name = "emNumber";
+            this.emNumber.ReadOnly = true;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(710, 326);
+            this.ClientSize = new System.Drawing.Size(677, 343);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Name = "Form2";
             this.Text = "Form2";
+            this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -151,9 +144,9 @@ namespace Session2
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn AssetSN;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AssetSn;
         private System.Windows.Forms.DataGridViewTextBoxColumn AssetName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn last_closed;
-        private System.Windows.Forms.DataGridViewTextBoxColumn number_em;
+        private System.Windows.Forms.DataGridViewTextBoxColumn EmEndDate;
+        private System.Windows.Forms.DataGridViewTextBoxColumn emNumber;
     }
 }

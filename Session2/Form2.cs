@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,11 +15,21 @@ namespace Session2
     {
         Connect con = new Connect();
         Op op = new Op();
+        MySqlDataAdapter adapter = new MySqlDataAdapter();
+       
+
+
         public Form2()
         {
-            DataTable dt = new DataTable();
             InitializeComponent();
-            op.getAssetData(dt, dataGridView1);
+            Ems ems = new Ems();
+            ems.ems = ems.getData();
+            foreach (DataGridViewColumn dc in dataGridView1.Columns)
+            {
+                dc.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+            var emsa = ems.ems;
+            dataGridView1.DataSource = emsa;
 
         }
 
@@ -26,6 +37,7 @@ namespace Session2
         {
            
         }
+        
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -34,6 +46,12 @@ namespace Session2
 
         private void label1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            
 
         }
     }

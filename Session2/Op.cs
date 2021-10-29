@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -48,28 +49,36 @@ namespace Session2
         }
 
         public void getAssetData(DataTable dt, DataGridView dv) {
-
+            DataTable dt1 = new DataTable();
             try {
 
-                MySqlCommand command = new MySqlCommand("SELECT * FROM assets left join emergencymaintenances" +
+                string query = "SELECT * FROM assets left join emergencymaintenances" +
            " on assets.ID = emergencymaintenances.AssetID left join employees on assets.EmployeeID = employees.ID left join assetgroups " +
            "on assets.AssetGroupID = assetgroups.ID left join departmentlocations on assets.DepartmentLocationID = departmentlocations.ID left join departments " +
            "on departmentlocations.DepartmentID = departments.id left join locations on departmentlocations.LocationID = locations.ID left join changedparts on " +
            "emergencymaintenances.ID = changedparts.ID left join priorities on emergencymaintenances.PriorityID = priorities.ID left join parts" +
-           " on changedparts.PartID = parts.ID", con.dbConnect());
+           " on changedparts.PartID = parts.ID";
+
+                con.Open();
+                MySqlCommand command = new MySqlCommand(query, con.dbConnect());
                 adapter.SelectCommand = command;
-                adapter.Fill(ds);
-
-                foreach (DataRow dr in ds.Tables[0].Rows) {
-
-                    Console.WriteLine(ds.Tables[0]);
                 
+                adapter.Fill(dt);
+
+                dt.Columns.Add("End Date", typeof(Int64));
+                dt.Columns.Add("Asset Name", typeof(string));
+               
+
+                foreach (DataRow dr in dt.Rows) {
+                    string AssetSn = dr["EMEndDate"].ToString();
+                    
+                    dt.Rows.Add(AssetSn);
+                   
                 }
-                
 
                 
                 dv.DataSource = dt;
-
+                con.Close();
             }
             catch (Exception e) {
                 MessageBox.Show(Convert.ToString(e));
