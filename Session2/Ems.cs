@@ -11,8 +11,7 @@ namespace Session2
 {
     public class Ems
     {
-        Connect con = new Connect();
-        MySqlDataAdapter adapter = new MySqlDataAdapter();
+     
         Op op = new Op();
         public List<Ems> ems { get; set; }
 
@@ -20,11 +19,11 @@ namespace Session2
         public string assetName { get; set; }
         public string endDate { get; set; }
         public int emNumber { get; set; }
-
+       
         public List<Ems> getData(DataTable dt)
         {
 
-            op.getAllData(dt);
+            op.getDataTable(dt, "order by AssetName Desc");
 
             var list = new List<Ems>();
             string buffer = "", edate = "--";
@@ -36,8 +35,8 @@ namespace Session2
 
                 if (dr["AssetName"].ToString().Equals(buffer))
                 {
-                    em++;
                     list.RemoveAt(i - 1);
+                    em++;         
                 }
 
                 if (!dr["EMReportDate"].ToString().Equals(""))
@@ -49,7 +48,7 @@ namespace Session2
                 {
                     
                     DateTime date = Convert.ToDateTime(dr["EMEndDate"].ToString()); 
-                    edate = date.ToString("dd/MM/yyyy");
+                    edate = date.ToString("yyyy/MM/dd");
 
                 }
                 else {

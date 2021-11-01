@@ -16,14 +16,14 @@ namespace Session2
         Connect con = new Connect();
         Op op = new Op();
         MySqlDataAdapter adapter = new MySqlDataAdapter();
-       
-
+        Ems ems = new Ems();
+        public string SN;
 
         public Form2()
         {
             DataTable dt = new DataTable();
             InitializeComponent();
-            Ems ems = new Ems();
+            
             ems.ems = ems.getData(dt);
 
             var emsa = ems.ems;
@@ -76,7 +76,7 @@ namespace Session2
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
+           
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -87,6 +87,22 @@ namespace Session2
         private void Form2_Load(object sender, EventArgs e)
         {
             
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count > 0) {
+
+                int index = dataGridView1.SelectedCells[0].RowIndex;
+                DataGridViewRow selectedRow = dataGridView1.Rows[index];
+                SN = selectedRow.Cells[0].Value.ToString();
+            }
+            
+            this.Hide();
+            Form3 form = new Form3(SN);
+            form.ShowDialog();
+            this.Close();
 
         }
     }

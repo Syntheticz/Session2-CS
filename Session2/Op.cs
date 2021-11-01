@@ -12,13 +12,14 @@ namespace Session2
 {
     public class Op
     {
+        StringBuilder sb = new StringBuilder();
         MySqlDataAdapter adapter = new MySqlDataAdapter();
         Connect con = new Connect();
         DataSet ds = new DataSet();
         public bool isLogin = false;
+        public string AssetSN;
 
-
-        public void getAllData( DataTable dt) {
+        public DataTable getDataTable(DataTable dt, string toAppend) {
 
             string query = "SELECT * FROM assets left join emergencymaintenances" +
            " on assets.ID = emergencymaintenances.AssetID left join employees on assets.EmployeeID = employees.ID left join assetgroups " +
@@ -27,21 +28,29 @@ namespace Session2
            "emergencymaintenances.ID = changedparts.ID left join priorities on emergencymaintenances.PriorityID = priorities.ID left join parts" +
            " on changedparts.PartID = parts.ID";
 
+            sb = new StringBuilder(query);
             con.Open();
 
-            MySqlCommand command = new MySqlCommand(query, con.dbConnect());
+            MySqlCommand command = new MySqlCommand(sb.ToString(), con.dbConnect());
             adapter.SelectCommand = command;
             adapter.Fill(dt);
 
             con.Close();
+            return dt;
         }
 
 
+        public StringBuilder getAppend(string toAppend) {
+            sb.Append(toAppend);
+            return sb;
+        }
+
+        
 
         public void login(string user, string pass) {
             try
             {
-                MySqlCommand command1 = new MySqlCommand("SELECT * FROM employees where Username = '" + user + "' and Password = '" + pass + "'", con.dbConnect());      
+                MySqlCommand command1 = new MySqlCommand("SELECT * FROM employees where Username = '" + user + "' and Password = '" + pass + "'", con.dbConnect());
                 command1.Parameters.Add("", MySqlDbType.VarChar).Value = user;
                 command1.Parameters.Add("", MySqlDbType.VarChar).Value = pass;
                 adapter.SelectCommand = command1;
@@ -52,8 +61,8 @@ namespace Session2
                 {
                     MessageBox.Show("Login Success...");
                     isLogin = true;
-                    
-                    
+
+
                 }
                 else
                 {
@@ -67,8 +76,12 @@ namespace Session2
             }
         }
 
-       
-    
+
+
+        
+
+
+
         }
 
        
