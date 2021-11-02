@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Session2
 {
@@ -23,27 +24,39 @@ namespace Session2
         public List<Ems> getData(DataTable dt)
         {
 
-            op.getDataTable(dt, "order by AssetName Desc");
+            op.getDataTable(dt, "\0");
 
             var list = new List<Ems>();
-            string buffer = "", edate = "--";
-            int em = 0, i = 0;
+            string  edate = "--";
+            int em = 0, i = -1, j = 0, buffer = 0;
 
             
             foreach (DataRow dr in dt.Rows)
             {
-
-                if (dr["AssetName"].ToString().Equals(buffer))
+               
+                int assetID = Convert.ToInt32(dr[0]);
+                if (assetID == buffer)
                 {
-                    list.RemoveAt(i - 1);
-                    em++;         
-                }
-
-                if (!dr["EMReportDate"].ToString().Equals(""))
-                {
+                    
                     em++;
+                    list.RemoveAt(j);
+                    
+                }
+                else {
+                    i++;
+                    j = i;
+                    Console.WriteLine(i);
+                    if (!string.IsNullOrEmpty(dr["EMReportDate"].ToString()))
+                    {
+                        em = 1;
+                    }
+                    else {
+                        em = 0;
+                    }
                 }
 
+
+                
                 if (!dr["EMEndDate"].ToString().Equals(""))
                 {
                     
@@ -63,10 +76,12 @@ namespace Session2
                     endDate = edate,
                     emNumber = em
                 });
-                buffer = dr["AssetName"].ToString();
 
-                em = 0;
-                i++;
+                
+                buffer = Convert.ToInt32(dr[0]);
+                
+               
+                
             }
             return list;
         }

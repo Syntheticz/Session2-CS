@@ -22,16 +22,17 @@ namespace Session2
         {
             
             DataTable dt = new DataTable();
-            dt = op.getDataTable(dt, "\0");
+            dt = op.getDataTable(dt, " where AssetSN = '"+AssetSN+"'");
             InitializeComponent();
             foreach (DataRow dr in dt.Rows) {
                 if (AssetSN.Equals(dr["AssetSN"].ToString())) {
                     AssetName = dr[2].ToString();
                     Department = dr[25].ToString();
                     assetID = Convert.ToInt32(dr[0]);
+                    
                 }
-            
             }
+
             label2.Text = AssetSN;
             label3.Text = AssetName;
             label5.Text = Department;
@@ -71,6 +72,8 @@ namespace Session2
 
         private void button1_Click(object sender, EventArgs e)
         {
+
+           
             if (string.IsNullOrEmpty(textBox1.Text) || string.IsNullOrEmpty(textBox2.Text))
             {
                 MessageBox.Show("There are empty fields!");
@@ -78,17 +81,17 @@ namespace Session2
             else {
 
                 try {
-                    assetID = getPriority(comboBox1.SelectedItem.ToString());
+                        priorityID = getPriority(comboBox1.SelectedItem.ToString());
 
-                    if (assetID < 1)
+                    if (priorityID < 1)
                     {
                         MessageBox.Show("Please choose a proirity");
                     }
                     else {
                         string query = "insert into emergencymaintenances(AssetID,PriorityID,DescriptionEmergency,OtherConsiderations,EMReportDate) values(@AssetID,@PriorityID,@DescriptionEmergency,@OtherConsidirations,@EMReportDate)";
-                        MySqlCommand command = new MySqlCommand(query, con.dbConnect());
+                        MySqlCommand command = new MySqlCommand(query, con.dbConnect());                 
                         command.Parameters.AddWithValue("@AssetID", assetID);
-                        command.Parameters.AddWithValue("@PriorityID", assetID);
+                        command.Parameters.AddWithValue("@PriorityID", priorityID);
                         command.Parameters.AddWithValue("@DescriptionEmergency", textBox1.Text);
                         command.Parameters.AddWithValue("@OtherConsidirations", textBox2.Text);
                         DateTime thisDay = DateTime.Today;
